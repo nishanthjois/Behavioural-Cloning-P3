@@ -19,8 +19,7 @@
 ### 3. load_process_image
     1. Loads image from image path using imread
     2. Calls helper function augment_image and which returns augmented image and corresponding images
- 
-    Got better and faster results after reading reading Vivek's blog, before that I was using Keras generator and image augmention like this:
+    3. Got better and faster results after reading reading Vivek's blog, before that I was using Keras generator and image augmention like this:
       train_datagen = ImageDataGenerator(
               rescale=1./255,
               shear_range=0.2,
@@ -29,7 +28,7 @@
       (More info in: https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.xh1deayrj)
         
 ### 4. height_width_augmentation
-    1. Shift height and width by a small margin to simulate car begin at different postions (left/right and up/down)
+    1. Shift height and width by a small margin to simulate car being at different postions (left/right and up/down)
     2. After shifting we will add corresponding steering angles
  
 ### 5. brightness_augmentation
