@@ -2,7 +2,7 @@
 
 ## Explanation:
 
-### 1. read_csv(): 
+### 1. read_csv: 
 
   	a. Driving_log file contains left, right and center image paths for every steering angle
   
@@ -66,8 +66,73 @@
           horizontal_flip=True,
           fill_mode='nearest')
 ### 7. crop_resize_image
-      Crop the image so that car's hood and sky is removed from the image - it both removes unwanted part of the image and also leads to less overhead in computation.
+      Crop the image so that sky and car's hood is removed from the image - it both removes unwanted part of the image and also leads to less overhead in computation.
       
+### 8. data_generator
+    1. Generates batch of images and steering angles by using Python's yield
+    2. Reason for using generator is to reduce memory overhead as we are dealing with more than 20K images
+
+### 8. Nvidia model
+    1. Nvidia model is used with input image size as 64*64
+    2. First layer is normalization layer
+    3. Rest ----
+### 9. Other models
+    1. I tried comma.ai model, but finally stuck with Nvidia model. No perticular reason to choose against comma.ai model - most of my testing was done on Nvidia model so I stuck to it. (Will try VGG or other models in free time)
+    
+### 10. Adam optimizer
+    1. Learning rate is 0.0001 with higher learning rate - car starts wandering
+    2. Note: adam to uses a larger effective step size, 
+    and the algorithm will converge to this step size without fine tuning.
+    
+### 11. Epoch
+    1. With just using Keras image generator (as mentioned in #3 and no separate data generator)- I had to used atleast 25 epochs to train the model correctly
+    2. With using of data_generator and augmentation mentioned above it takes only 10 max.
+    3. Final epoch:
+    Epoch 10/10
+    25344/25600 [============================>.] - ETA: 1s - loss: 0.0308Epoch 00009: val_loss improved from 0.02976 to     0.02777, saving model to model56.h5
+    25600/25600 [==============================] - 128s - loss: 0.0309 - val_loss: 0.0278
+
+### 12. Batch size and training/validation samples
+    1. I used 128 too but 256 was faster and got same results. 
+    2. I got warning to use correct samples_per_epoch and solved it by having samples_per_epoch a number that can be divided by batch_size: 
+    nb_validation = len(images_validation)
+    nb_validation== int(nb_validation/256)*256
+### 13. Checkpoint, early stop and callbacks
+    Ref: https://keras.io/callbacks/#earlystopping
+    Code: 
+    checkpoint = ModelCheckpoint('model56.h5', monitor='val_loss', verbose=1, save_best_only=True)
+    early_stop = EarlyStopping(monitor='val_loss', min_delta=0.0001, patience=3, verbose=1)
+    
+    1. Used simpler checkpoint strategy: to save the model weights to the same file, if and only if the  validation accuracy improves.
+    2. Arguments:
+    monitor: quantity to be monitored.
+    min_delta: minimum change in the monitored quantity to qualify as an improvement
+    patience: number of epochs with no improvement after which training will be stopped.
+### 14. model.fit_generator
+    1. Takes python generator as input of training data and validation data with callback strategy and trains the model for a     fixed number of epochs.
+
+### 15. Save model
+    1. Weights are saved in .h5 format and model in .json format - these along with drive.py will be used to run the simulator
+    2. Code: 
+    with open("model56.json", "w") as json_file:
+          json_file.write(model.to_json())
+
+### 16. Drive.py
+    1. Edited this file to take cropped image size as input similar to my model.py (without this change my car was not moving at all even though model was displaying steering angles in terminal).
+    2. Tried various throttle from 0.1 to 0.3 - 
+      - 0.12 to 0.20 was most suitable for track #1 with steering angle default
+      - 0.3 was sutiable for track #2 with steering angle mutlipled by 1.4; and image quality 'fastest' 
+
+### 17. Training data
+    1. I started with by training for 5-7 laps with keyboard and generated around 40k samples but after training with it I didn't get good results - car started wandering around near bridge and lake.
+    2. After reading few blogs I thought I should try with joystick but had issues with joystick on my Ubuntu.
+    3. Finally, few people in forum said that new data from Udacity is more than enough - I used it to train my model and it worked without issues.
+      
+### 18. Future work
+    1. Make car run smooth
+    2. Train with more models
+    
+Note: This project would have been completed without forums and blogs which Udacity students have written, special thanks to them. 
 
     
     
