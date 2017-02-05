@@ -132,12 +132,5 @@
     1. Make car run smooth
     2. Train with more models
     
-Note: This project would have been completed without forums and blogs which Udacity students have written, special thanks to them. 
+Note: This project would not have been completed without forums and blogs which Udacity students have written, special thanks to everyone. 
 
-    
-    
-  
-                                                                         
-
-
-  
