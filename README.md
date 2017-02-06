@@ -85,9 +85,17 @@
     2. Reason for using generator is to reduce memory overhead as we are dealing with more than 20K images
 
 ### 8. Nvidia model
-    1. Nvidia model is used with input image size as 64*64
+    Ref: https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/
+    1. Nvidia model (almost similar) is used with input image size as 64*64
     2. First layer is normalization layer
-    3. Model:
+    3. Model consists of 5 CNN layer, 5 FC layers and drop outs (to avoid overfitting)
+    4. Activation model used in ELU 
+    From paper: https://arxiv.org/abs/1511.07289
+    a. ELUs alleviate the vanishing gradient problem via the identity for positive values.
+    b. ELUs lead not only to faster learning, but also to significantly better generalization performance than ReLUs and  LReLUs on networks with more than 5 layers.
+    4. Model is train to minimize mse (mean-squared error) of output steerring angle 
+    5. Total parameters: 285,855
+    5. Model:
     
 ![Alt text](/Sample-files/model.png?)  
 
@@ -112,6 +120,7 @@
     2. I got warning to use correct samples_per_epoch and solved it by having samples_per_epoch a number that can be divided by batch_size: 
     nb_validation = len(images_validation)
     nb_validation== int(nb_validation/256)*256
+    
 ### 13. Checkpoint, early stop and callbacks
     Ref: https://keras.io/callbacks/#earlystopping
     Code: 
