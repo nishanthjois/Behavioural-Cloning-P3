@@ -40,7 +40,8 @@
     2. After shifting we will add corresponding steering angles
  
 ### 5. brightness_augmentation
-    1. Add random brightness to simulate car beging in different lighting conditions (sunlight, shadow, dawn/dusk, steertlight, etc.,)
+    1. Add random brightness to simulate car being in different lighting conditions (sunlight, shadow, dawn/dusk, steertlight, etc.,)
+    Ref: http://docs.opencv.org/3.1.0/da/d6e/tutorial_py_geometric_transformations.html
 
 ### 6. Other augmention methods which I tried
     I haven't used in the project but I will try it out in future; adding here for reference:
