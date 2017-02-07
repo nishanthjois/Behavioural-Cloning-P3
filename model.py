@@ -203,7 +203,7 @@ nb_validation= int(nb_validation/256)*256
 # min_delta: minimum change in the monitored quantity to qualify as an improvement
 # patience: number of epochs with no improvement after which training will be stopped.
 
-checkpoint = ModelCheckpoint('model62.h5', monitor='val_loss', verbose=1, save_best_only=True)
+checkpoint = ModelCheckpoint('model.h5', monitor='val_loss', verbose=1, save_best_only=True)
 early_stop = EarlyStopping(monitor='val_loss', min_delta=0.0001, patience=3, verbose=1)
 
 # Recording loss history
@@ -223,7 +223,7 @@ callbacks = [early_stop, checkpoint,losshistory]
 history=model.fit_generator(data_generator(images_training, angles_training, batch_size=batch_size),nb_training, nb_epoch,validation_data=data_generator(images_validation, angles_validation, batch_size=batch_size),callbacks=callbacks, nb_val_samples=nb_validation)                                                                                          
 
 #Save the model in .json format
-with open("model62.json", "w") as json_file:
+with open("model.json", "w") as json_file:
     json_file.write(model.to_json())
                                                                                           
 ########### END ################
