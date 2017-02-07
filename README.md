@@ -186,5 +186,15 @@
     1. Make car run smooth
     2. Experiment with more models
     
-Note: This project would not have been completed without forums and blogs which Udacity students have written, special thanks to everyone. 
+Note: This project would not have been completed without forums and blogs which Udacity students have written, special thanks to everyone:
+https://carnd.slack.com/messages/p-behavioral-cloning/search/data/
+https://carnd-forums.udacity.com/questions/26214464/behavioral-cloning-cheatsheet
+https://medium.com/@tantony/training-a-neural-network-in-real-time-to-control-a-self-driving-car-9ee5654978b7#.n5xuutm66
+https://keras.io/
+https://arxiv.org/abs/1511.07289
+https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/
+http://docs.opencv.org
+https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.xh1deayrj
+https://www.udacity.com/drive
+
 
