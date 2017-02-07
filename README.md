@@ -1,4 +1,4 @@
-# # Udacity SDND's project #3: Use Deep Learning to Clone Driving Behaviour
+# Udacity SDND's project 3: Use Deep Learning to Clone Driving Behaviour
 
 ## Steps used in the project:
     1. Used data (images and corresponding steering angle) provided by Udacity as input.
