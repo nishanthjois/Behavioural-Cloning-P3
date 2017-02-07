@@ -187,6 +187,7 @@
     2. Experiment with more models
     
 Note: This project would not have been completed without forums and blogs which Udacity students have written, special thanks to everyone:
+
 https://carnd.slack.com/messages/p-behavioral-cloning/search/data/
 
 https://carnd-forums.udacity.com/questions/26214464/behavioral-cloning-cheatsheet
