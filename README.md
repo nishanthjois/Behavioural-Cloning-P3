@@ -1,8 +1,19 @@
-# Project 3: Behavioural Cloning 
+# # Udacity SDND's project #3: Use Deep Learning to Clone Driving Behaviour
 
-## Description (Code/function wise details of the project):
+## Steps used in the project:
+    1. Used data (images and corresponding steering angle) provided by Udacity as input.
+    2. Input images were augmented to simulate the behaviour of car being at different poistions.
+    3. Python generators were used to generate batches of augmented images (as input to model)
+    4. Convolution neural network (similar to Nvidia's model) in Keras was built to predict steering angles from images.
+    5. Dropout (to avoid overfitting), he_normal (initilization), ELU (activation) and Adam (optimizer) were used in creation        of model. 
+    6. Keras model was trained and validated with a training and validation set using checkpoints and early stopping.
+    7. Saved the weights (.h5) and model (.json)
+    8. Tweaked drive.py file to take cropped image as input (same size as model's input).
+    9. Ran the car around track one and it succesfully ran without leaving the road.
 
-### 1. Reading data
+## Description (code/function wise details of model.py):
+
+### 1. Reading data (line: 34-57)
 
   	1. driving_log file contains left, right annd center image paths for every steering angle
   
@@ -20,11 +31,11 @@
 
 ![Alt text](/Sample-files/Img_vs_angle.png?)
 
-### 2. Train - test spliting
+### 2. Train - test spliting (line 60-66)
     1. Data is split into trainig and validation data into 80:20 format (i.e., test size = 0.2)
     2. We are not spliting data for testing purpose as testing will be done on simulator
 
-### 3. load_process_image()
+### 3. load_process_image(line 75-86)
     1. Loads image from image path using imread
     2. Calls helper function augment_image and which returns augmented image and corresponding images
     3. Got better and faster results after reading Vivek's blog, before that I was using Keras generator and image augmention like this:
@@ -35,11 +46,11 @@
               horizontal_flip=True)
       (More info in: https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.xh1deayrj)
         
-### 4. height_width_augmentation
+### 4. height_width_augmentation (line 90-102 )
     1. Shift height and width by a small margin to simulate car being at different postions (left/right and up/down)
     2. After shifting we will add corresponding steering angles
  
-### 5. brightness_augmentation
+### 5. brightness_augmentation (line 107-117 )
     1. Add random brightness to simulate car being in different lighting conditions (sunlight, shadow, dawn/dusk, steertlight, etc.,)
     Ref: http://docs.opencv.org/3.1.0/da/d6e/tutorial_py_geometric_transformations.html
 
@@ -74,18 +85,18 @@
           horizontal_flip=True,
           fill_mode='nearest')
           
-### 7. crop_resize_image
+### 7. crop_resize_image (line 120-124)
       Crop the image so that sky and car's hood is removed from the image - it both removes unwanted part of the image and also leads to less overhead in computation.
 
 ### Augmentaion results:
 
 ![Alt text](Sample-files/Augmentation.png?)
  
-### 8. data_generator
+### 8. data_generator (line 129-143)
     1. Generates batch of images and steering angles by using Python's yield
     2. Reason for using generator is to reduce memory overhead as we are dealing with more than 20K images
 
-### 8. Nvidia model
+### 8. Nvidia model (line 153-180 )
     Ref: https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/
     1. Nvidia model (almost similar) is used with input image size as 64*64
     2. First layer is normalization layer
@@ -106,11 +117,11 @@
 ### 9. Other models
     1. I tried comma.ai model, but finally stuck with Nvidia model. No perticular reason to choose against comma.ai model - most of my testing was done on Nvidia model so I stuck to it. (Will try VGG or other models in free time).
     
-### 10. Adam optimizer
+### 10. Adam optimizer (line 187)
     1. Learning rate is 0.0001 with higher learning rate - car starts wandering.
     2. Note from SO: adam uses a larger effective step size, and the algorithm will converge to this step size without fine tuning.
     
-### 11. Epoch
+### 11. Epoch (line 190,226)
     1. With just using Keras image generator (as mentioned in #3 and no separate data generator)- I had to use atleast 25 epochs to train the model correctly
     2. By using data_generator and augmentation mentioned above it takes only 10 epochs max.
     3. Final epoch:
@@ -118,13 +129,13 @@
     25344/25600 [============================>.] - ETA: 1s - loss: 0.0308Epoch 00009: val_loss improved from 0.02976 to     0.02777, saving model to model56.h5
     25600/25600 [==============================] - 128s - loss: 0.0309 - val_loss: 0.0278
 
-### 12. Batch size and training/validation samples
+### 12. Batch size and training/validation samples (190-198,226)
     1. I tried 128 but 256 was faster and got same results. 
     2. I got warning to use correct samples_per_epoch and solved it by having samples_per_epoch a number that can be divided by batch_size: 
     nb_validation = len(images_validation)
     nb_validation== int(nb_validation/256)*256
     
-### 13. Checkpoint, early stop and callbacks
+### 13. Checkpoint, early stop and callbacks (line 209-223 )
     Ref: https://keras.io/callbacks/#earlystopping
     Code: 
     checkpoint = ModelCheckpoint('model56.h5', monitor='val_loss', verbose=1, save_best_only=True)
@@ -135,11 +146,12 @@
     monitor: quantity to be monitored.
     min_delta: minimum change in the monitored quantity to qualify as an improvement
     patience: number of epochs with no improvement after which training will be stopped.
+    3. lossHistory(): As the name suggests provides loss details at everystep (we can use this to create a loss graph)
     
-### 14. model.fit_generator
+### 14. model.fit_generator (line 226)
     1. Takes python generator as input of training data and validation data with callback strategy and trains the model for a     fixed number of epochs.
 
-### 15. Save model
+### 15. Save model (line 229,230)
     1. Weights are saved in .h5 format and model in .json format - these along with drive.py will be used to run the simulator
     2. Code: 
     with open("model56.json", "w") as json_file:
@@ -152,6 +164,7 @@
       - 0.3 was sutiable for track #2 with steering angle mutlipled by 1.4; and image quality 'fastest' 
 
 ### 17. Training data
+    0. As some suggested in forum - I just started with 3 images (left, right and center) - my basic model worked with it.
     1. I started with by training for 5-7 laps with keyboard and generated around 40k samples but after training with it I didn't get good results - car started wandering around near bridge and lake.
     2. After reading few blogs I thought I should try with joystick but had issues with joystick on my Ubuntu.
     3. Finally, few people in forum said that new data from Udacity is more than enough - I used it to train my model and it worked without issues with Nvidia model.
@@ -161,7 +174,7 @@
     25344/25600 [============================>.] - ETA: 1s - loss: 0.0317Epoch 00009: val_loss improved from 0.03069 to 0.02912, saving model to model58.h5
     25600/25600 [==============================] - 141s - loss: 0.0317 - val_loss: 0.0291
     
-### Visualization of CNN layer outputs:
+### Visualization of CNN layer outputs (line 258-284):  
      1. Layer 1:
      ![Alt text](/Sample-files/conv1.png?)  
      
