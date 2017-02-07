@@ -9,7 +9,7 @@
     6. Keras model was trained and validated with a training and validation set using checkpoints and early stopping.
     7. Saved the weights (.h5) and model (.json)
     8. Tweaked drive.py file to take cropped image as input (same size as model's input).
-    9. Ran the car around track one and it succesfully ran without leaving the road.
+    9. Ran the car around track one and it succesfully ran without leaving the road (Simulator: Fastest, throttle = 0.2)
 
 ## Description (code/function wise details of model.py):
 
@@ -160,8 +160,9 @@
 ### 16. Drive.py
     1. Edited this file to take cropped image size as input similar to my model.py (without this change my car was not moving at all even though model was displaying steering angles in terminal).
     2. Tried various throttle from 0.1 to 0.3 - 
-      - 0.12 to 0.20 was most suitable for track #1 with steering angle default
-      - 0.3 was sutiable for track #2 with steering angle mutlipled by 1.4; and image quality 'fastest' 
+      - 0.12 to 0.20 was most suitable for track #1 with steering angle default; and image quality of simulator 'fastest'. 
+      - 0.32 was sutiable for track #2 with steering angle mutlipled by 1.4; and image quality of simulator 'fastest'.
+      - Note: mainly on track #2: car doesn't run smoothly (I need to fix this in future) 
 
 ### 17. Training data
     0. As some suggested in forum - I just started with 3 images (left, right and center) - my basic model worked with it.
