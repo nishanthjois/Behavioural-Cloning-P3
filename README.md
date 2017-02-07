@@ -35,7 +35,7 @@
     1. Data is split into trainig and validation data into 80:20 format (i.e., test size = 0.2)
     2. We are not spliting data for testing purpose as testing will be done on simulator
 
-### 3. load_process_image(line 75-86)
+### 3. load_process_image (line 75-86)
     1. Loads image from image path using imread
     2. Calls helper function augment_image and which returns augmented image and corresponding images
     3. Got better and faster results after reading Vivek's blog, before that I was using Keras generator and image augmention like this:
