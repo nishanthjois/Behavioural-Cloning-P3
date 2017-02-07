@@ -2,11 +2,11 @@
 
 ## Description (Code/function wise details of the project):
 
-### 1. Training data
+### 1. Reading data
 
   	1. Driving_log file contains left, right annd center image paths for every steering angle
   
-    2. read_scv function reads driving_log file in pandas dataframe
+    2. read_csv function reads driving_log file in pandas dataframe
   
     3. Image path and corresponding angles are read column wise (center, left, right and steerting angles only; others are ignored)
   
@@ -20,7 +20,7 @@
 
 ![Alt text](/Sample-files/Img_vs_angle.png?)
 
-### 2. images_training, images_validation, angles_training, angles_validation = train_test_split(X, y, test_size=0.2,random_state=7)
+### 2. Train - test spliting
     1. Data is split into trainig and validation data into 80:20 format (i.e., test size = 0.2)
     2. We are not spliting data for testing purpose as testing will be done on simulator
 
@@ -88,13 +88,16 @@
     Ref: https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/
     1. Nvidia model (almost similar) is used with input image size as 64*64
     2. First layer is normalization layer
-    3. Model consists of 5 CNN layer, 5 FC layers and drop outs (to avoid overfitting)
-    4. Activation model used in ELU 
+    3. Model consists of 5 conv2D layers - first 3 has 5x5 layers and next 2 has 3x3 layers
+    4. Model conists of 5 FC layers and drop outs (to avoid overfitting)
+    4. Activation model used is ELU to introduce nonlinerity
     From paper: https://arxiv.org/abs/1511.07289
     a. ELUs alleviate the vanishing gradient problem via the identity for positive values.
     b. ELUs lead not only to faster learning, but also to significantly better generalization performance than ReLUs and  LReLUs on networks with more than 5 layers.
-    5. Without init - my car was wandering of the street.
-    7. Model is train to minimize mse (mean-squared error) of output steerring angle 
+    6. Initialization: 
+    Without init and with init=normal - car was crashing
+    With init = he_normal - car drove succesfully across track.
+    7. Model is trained to minimize mse (mean-squared error) of output steerring angle 
     8. Total parameters: 285,855
     9. Model:
     
@@ -151,16 +154,23 @@
 ### 17. Training data
     1. I started with by training for 5-7 laps with keyboard and generated around 40k samples but after training with it I didn't get good results - car started wandering around near bridge and lake.
     2. After reading few blogs I thought I should try with joystick but had issues with joystick on my Ubuntu.
-    3. Finally, few people in forum said that new data from Udacity is more than enough - I used it to train my model and it worked without issues.
+    3. Finally, few people in forum said that new data from Udacity is more than enough - I used it to train my model and it worked without issues with Nvidia model.
 
 ### 18. Output:
     Epoch 10/10
     25344/25600 [============================>.] - ETA: 1s - loss: 0.0317Epoch 00009: val_loss improved from 0.03069 to 0.02912, saving model to model58.h5
     25600/25600 [==============================] - 141s - loss: 0.0317 - val_loss: 0.0291
+    
+### Visualization of CNN layer outputs:
+     1. Layer 1:
+     ![Alt text](/Sample-files/conv1.png?)  
+     
+     2. Layer 2: 
+     ![Alt text](/Sample-files/conv2.png?)  
 
-### 18. Future work
+### 19. Future work
     1. Make car run smooth
-    2. Train with more models
+    2. Experiment with more models
     
 Note: This project would not have been completed without forums and blogs which Udacity students have written, special thanks to everyone. 
 
